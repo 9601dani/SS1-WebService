@@ -1,0 +1,19 @@
+$blue: #005792;
+$orange: #FD5F00;
+$dark-blue: #13334C;
+$beige-light: #d0d1cd;
+$beige-lighter: #F6F6E9;
+
+
+@use "bulma/sass" with (
+  $family-primary: '"Nunito", sans-serif',
+  $grey-dark: $dark-blue, 
+  $grey-light: $beige-light, 
+  $primary: $blue,   
+  $link: $orange,     
+  $control-border-width: 2px,
+  $input-shadow: none
+);
+
+// import bulmas badge component
+@import "@creativebulma/bulma-badge";

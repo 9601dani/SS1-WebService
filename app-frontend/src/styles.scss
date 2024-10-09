@@ -1,0 +1,15 @@
+/* Import splideJs */
+@import "@splidejs/splide/css";
+
+/* Set global styles */
+html, body { 
+  height: 100%; 
+}
+
+body { 
+  margin: 0; 
+  font-family: Roboto, "Helvetica Neue", sans-serif; 
+}
+
+/* Import custom theme */
+@import "./custom-theme.scss";
