@@ -6,7 +6,7 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.get("", (req, res) => {
-  res.send("Hello World!");
+  res.send("Hello World! This is a Module Credit CARD API. 201930699 #3");
 });
 
 router.get("/test-db", async (req, res) => {
