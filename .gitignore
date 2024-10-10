@@ -145,4 +145,4 @@ e-backend/.vscode/
 # Ignorar el archivo .env
 .env
 
-e-backend/config/
+app-backend/config/
