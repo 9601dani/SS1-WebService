@@ -35,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
 	logger.trace(`= = = = = = PROJECT IN DEVELOPMENT = = = = = =`);
 }
 
-app.listen(PORT, () => {
-	logger.level = "info";
-	logger.info(`App listening at http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    logger.level = "info";
+    logger.info(`App listening at http://0.0.0.0:${PORT}`);
 });
