@@ -1,0 +1,72 @@
+<nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <div class="navbar-item is-clickable">
+        <a [routerLink]="['/home']">
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftoppng.com%2Fuploads%2Fpreview%2Fhome-icon-home-house-icon-house-icon-free-11553508857ouiuhg9nsa.png&f=1&nofb=1&ipt=dc7bddb4b42d4c10aad154b35c27ec261fcaebe009ab5cfd6d851a64ae8ff988&ipo=images" alt="Logo" />
+        </a>
+      </div>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" [ngClass]="{'is-active': isActive}"
+        (click)="toggleNavbar()">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    @if(showButtons) {
+      <div id="navbarBasicExample" class="navbar-menu" [ngClass]="{'is-active': isActive}">
+        @if(isLogged) {
+        <div class="navbar-start">
+          <ng-container *ngFor="let module of modules">
+            <div class="navbar-item has-dropdown" [ngClass]="{'is-active': activeModule === module.name}">
+              <a class="navbar-link" (click)="toggleSubmenu(module.name)">
+                {{ module.name }}
+                <span class="icon">
+                  <i [ngClass]="{'fa-angle-down': activeModule !== module.name, 'fa-angle-up': activeModule === module.name}"
+                    class="fas"></i>
+                </span>
+              </a>
+              <div class="navbar-dropdown" *ngIf="activeModule === module.name">
+                <a class="navbar-item" *ngFor="let page of module.pages" [routerLink]="[page.path]">
+                  {{ page.name }}
+                </a>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item has-dropdown is-hoverable mr-3">
+            <a class="navbar-link">
+              <figure class="image is-32x32 is-align-content-center">
+                <img class="is-rounded" src="
+                https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc0.klipartz.com%2Fpngpicture%2F81%2F570%2Fgratis-png-perfil-logo-iconos-de-computadora-usuario-usuario.png&f=1&nofb=1&ipt=d9546455b52e147d68d002ab55188babcae27cdc09ca6575324b760b1d702f0a&ipo=images" alt="profile image" />
+              </figure>
+              {{ email }}
+            </a>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" (click)="myAccount()">Mi Cuenta</a>
+              <hr class="navbar-divider" />
+              <a class="navbar-item" (click)="logout()">Salir</a>
+            </div>
+          </div>
+        </div>
+        } @else {
+        <div class="navbar-start">
+          <div class="navbar-item">
+
+          </div>
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item">
+          </div>
+          <div class="navbar-item">
+            <a class="button is-light" href="/login">Ingreso/Registro</a>
+          </div>
+        </div>
+        }
+      </div>
+    }
+  </nav>

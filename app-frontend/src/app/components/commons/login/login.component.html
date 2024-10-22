@@ -1,1 +1,54 @@
-<p>login works!</p>
+<app-navbar></app-navbar>
+
+<div class="container is-flex is-justify-content-center is-align-items-center" style="min-height: 100vh;">
+  
+  <div class="column is-flex is-justify-content-center is-align-items-center" style="width: 100%; max-width: 600px;">
+    
+    <div class="box" style="border-radius: 12px; width: 100%; padding: 3rem;">
+      
+      <h1 class="title is-3 has-text-centered mb-4">Iniciar Sesión</h1>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="field">
+          <label class="label">Correo Electronico</label>
+          <div class="control has-icons-left">
+            <input class="input is-medium" type="text" formControlName="usernameOrEmail" placeholder="Correo Electronico" required>
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+          <p class="help is-danger" *ngIf="loginForm.get('usernameOrEmail')?.hasError('required')">
+            Este campo es requerido
+          </p>
+          <br>
+        </div>
+
+        <div class="field mt-5">
+          <label class="label">Contraseña</label>
+          <div class="control has-icons-left">
+            <input class="input is-medium" [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" required>
+            <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()" style="cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"></i>
+          </div>
+          <p class="help is-danger" *ngIf="passwordHasErrorRequired">
+            Este campo es requerido
+          </p>
+          <br>
+        </div>
+
+        <div class="field">
+          <button class="button is-primary is-fullwidth is-medium" type="submit" [disabled]="loginForm.invalid || isLoading">
+            Inicio de Sesión
+            <div *ngIf="isLoading" class="loader" style="margin-left: 10px;"></div>
+          </button>
+        </div>
+      </form>
+
+      <div class="has-text-centered mt-2">
+        <p class="mt-4">Recordar Pin
+          <a href="javascript:void(0)" (click)="forgotPassword()">¡Recordar!</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

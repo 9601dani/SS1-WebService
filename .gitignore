@@ -148,3 +148,6 @@ e-backend/dev.env
 .env
 
 app-backend/config/
+
+.idea/
+.idea/*

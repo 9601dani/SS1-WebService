@@ -1,12 +1,16 @@
-import {  Component } from '@angular/core';
+import {  Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [
+    NavbarComponent
+  ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class HomeComponent  {
 }
