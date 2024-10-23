@@ -4,13 +4,15 @@ import { LoginComponent } from './components/commons/login/login.component';
 import { NgModule } from '@angular/core';
 import { NotFoundComponent } from './components/commons/not-found/not-found.component';
 import {AddUserComponent} from "./components/admin/add-user/add-user.component";
+import { DynamicPageComponent } from './components/commons/dynamic-page/dynamic-page.component';
 
 export const routes: Routes = [
     {'path': '', 'redirectTo': 'home', 'pathMatch': 'full'},
     {'path': 'home', component: HomeComponent},
     {'path': 'login', component: LoginComponent},
     {'path': 'add-accounts', component: AddUserComponent},
-    { 'path': '**', component: NotFoundComponent }
+    { 'path': 'page/:page', component: DynamicPageComponent },
+    { 'path': '**', component: NotFoundComponent },
 ];
 
 

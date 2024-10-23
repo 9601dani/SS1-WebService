@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <br><br>
+    <h1 class="title" style="text-align: center;">{{ keyName | titlecase }}</h1>
+    <div class="dynamic-content" *ngIf="content; else loading">
+      <div [innerHTML]="content"></div> 
+      @if(this.keyName=='contact'){
+        <div class="control">
+            <button type="button" class="button is-primary" (click)="handleSubmit()">Enviar Mensaje</button>
+          </div>
+      }
+    </div>
+    <ng-template #loading>
+      <p>Cargando contenido...</p>
+    </ng-template>
+</div>

@@ -1,0 +1,111 @@
+$primary-color: #3273dc;
+$secondary-color: #f5f5f5;
+$text-color: #333;
+$border-color: #ddd;
+$button-color: #00d1b2;
+$button-hover-color: darken($button-color, 10%);
+$border-radius: 8px;
+  
+.dynamic-content {
+  background-color: $secondary-color;
+  padding: 20px;
+  border-radius: $border-radius;
+  border: 1px solid $border-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: $primary-color;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    color: $text-color;
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 0;
+    li {
+      margin-bottom: 8px;
+      font-size: 16px;
+      strong {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+form {
+  .field {
+    margin-bottom: 15px;
+
+    label {
+      font-size: 16px;
+      font-weight: bold;
+      color: $text-color;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      font-size: 14px;
+      box-sizing: border-box;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 5px rgba(50, 115, 220, 0.2);
+      }
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+  }
+
+  button[type="submit"] {
+    background-color: $button-color;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: $border-radius;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    &:hover {
+      background-color: $button-hover-color;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dynamic-content {
+    padding: 15px;
+  }
+
+  form {
+    .field {
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        padding: 8px;
+      }
+    }
+
+    button[type="submit"] {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+  }
+}

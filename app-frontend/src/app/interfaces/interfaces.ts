@@ -10,3 +10,18 @@ export interface Module{
     pages: Page[];
 
 }
+
+export interface Comment{
+    id: number;
+    FK_User: number;
+    comment: string;
+    created_at: string;
+    email: string;
+}
+
+export interface CommentRequest{
+    id: number,
+    FK_User: number,
+    comment: string,
+    created_at: Date
+}

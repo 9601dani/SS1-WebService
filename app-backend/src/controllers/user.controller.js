@@ -46,7 +46,6 @@ userController.login = async (req, res) => {
         const timeExpiredHours = 1;
         const timeExpired = new Date(dateNow.setHours(dateNow.getHours() + timeExpiredHours));
 
-        console.log("ID: ", user.id);
         const queryUpdateToken = `UPDATE user SET auth_token = ?, auth_token_expired = ? WHERE id = ?;`;
         await connection.query(queryUpdateToken, [token, timeExpired, user.id]);
 
@@ -57,7 +56,6 @@ userController.login = async (req, res) => {
         return res.status(200).send({ message: "Login correcto.", user: user, token: token });
 
     }catch(error){
-        console.log(error);
         res.status(500).send({message: "Error al guardar el usuario", error: error.message});
     }finally{
         if(connection){
@@ -133,6 +131,97 @@ userController.getRoles = async (req, res) => {
 
     } catch (error) {
         res.status(500).send({ message: "Error al obtener los roles.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.getComments = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        const queryComments = `
+            SELECT comment.id, comment.FK_User, comment.comment, comment.created_at, user.email
+            FROM comment
+            JOIN user ON comment.FK_User = user.id
+            ORDER BY created_at DESC
+            LIMIT 2;
+        `;
+
+        const result = await connection.query(queryComments);
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(500).send({ message: "Error al obtener los comentarios.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.createComment = async (req, res) => {
+    let connection;
+    try {
+        const { id, FK_User, comment, created_at } = req.body;
+        connection = await getConnection();
+
+        const localDateTimeNow = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        if (!comment) {
+            return res.status(400).send({ message: "El comentario es requerido." });
+        }
+
+        const queryInsertComment = `INSERT INTO comment (FK_User, comment, created_at) VALUES (?, ?, ?);`;
+        const result = await connection.query(queryInsertComment, [FK_User, comment, localDateTimeNow]);
+
+        if (result.affectedRows === 0) {
+            return res.status(400).send({ message: "El comentario no se ha podido guardar." });
+        }
+
+        const queryComments = `
+            SELECT comment.id, comment.FK_User, comment.comment, comment.created_at, user.email
+            FROM comment
+            JOIN user ON comment.FK_User = user.id
+            ORDER BY created_at DESC
+            LIMIT 2;
+        `;
+
+        const resultComments = await connection.query(queryComments);
+
+        res.status(200).json(resultComments);
+
+    } catch (error) {
+        res.status(500).send({ message: "Error al guardar el comentario.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.getContent = async (req, res) => {
+    let connection;
+    try {
+        const { keyName } = req.params;
+        connection = await getConnection();
+
+        if (!keyName) {
+            return res.status(400).send({ message: "El keyName es requerido." });
+        }
+
+        const queryContent = `SELECT * FROM company_settings WHERE key_name = ?;`;
+
+        const result = await connection.query(queryContent, [keyName]);
+
+        res.status(200).json(result);
+
+    } catch (error) {
+        res.status(500).send({ message: "Error al obtener el contenido.", error: error.message });
     } finally {
         if (connection) {
             connection.release();

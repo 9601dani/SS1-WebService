@@ -1,50 +1,48 @@
 <app-navbar></app-navbar>
 
-<div class="container is-flex is-justify-content-center is-align-items-center" style="min-height: 100vh;">
+<div class="container-login">
   
-  <div class="column is-flex is-justify-content-center is-align-items-center" style="width: 100%; max-width: 600px;">
+  <div class="login-box">
     
-    <div class="box" style="border-radius: 12px; width: 100%; padding: 3rem;">
+    <div class="login-form">
       
-      <h1 class="title is-3 has-text-centered mb-4">Iniciar Sesión</h1>
+      <h1 class="title">Iniciar Sesión</h1>
 
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="field">
-          <label class="label">Correo Electronico</label>
+          <label class="label">Correo Electrónico</label>
           <div class="control has-icons-left">
-            <input class="input is-medium" type="text" formControlName="usernameOrEmail" placeholder="Correo Electronico" required>
-            <span class="icon is-small is-left">
+            <input class="input" type="text" formControlName="usernameOrEmail" placeholder="Correo Electrónico" required>
+            <span class="icon">
               <i class="fas fa-user"></i>
             </span>
           </div>
-          <p class="help is-danger" *ngIf="loginForm.get('usernameOrEmail')?.hasError('required')">
+          <p class="error-text" *ngIf="loginForm.get('usernameOrEmail')?.hasError('required')">
             Este campo es requerido
           </p>
-          <br>
-        </div>
-
-        <div class="field mt-5">
-          <label class="label">Contraseña</label>
-          <div class="control has-icons-left">
-            <input class="input is-medium" [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" required>
-            <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()" style="cursor: pointer; position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"></i>
-          </div>
-          <p class="help is-danger" *ngIf="passwordHasErrorRequired">
-            Este campo es requerido
-          </p>
-          <br>
         </div>
 
         <div class="field">
-          <button class="button is-primary is-fullwidth is-medium" type="submit" [disabled]="loginForm.invalid || isLoading">
+          <label class="label">Contraseña</label>
+          <div class="control has-icons-left">
+            <input class="input" [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" required>
+            <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()" class="password-toggle"></i>
+          </div>
+          <p class="error-text" *ngIf="passwordHasErrorRequired">
+            Este campo es requerido
+          </p>
+        </div>
+
+        <div class="field">
+          <button class="button-submit" type="submit" [disabled]="loginForm.invalid || isLoading">
             Inicio de Sesión
-            <div *ngIf="isLoading" class="loader" style="margin-left: 10px;"></div>
+            <div *ngIf="isLoading" class="loader"></div>
           </button>
         </div>
       </form>
 
-      <div class="has-text-centered mt-2">
-        <p class="mt-4">Recordar Pin
+      <div class="forgot-password">
+        <p>Recordar Pin
           <a href="javascript:void(0)" (click)="forgotPassword()">¡Recordar!</a>
         </p>
       </div>

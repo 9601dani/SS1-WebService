@@ -26,6 +26,7 @@ export class LoginComponent {
   isLoading = false;
 
   hide = true;
+
   constructor(
     private fb: FormBuilder,
     private _authService: UserService,

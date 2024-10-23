@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { Observable } from 'rxjs';
-import { Module } from '../interfaces/interfaces';
+import { Comment, CommentRequest, Module } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +26,18 @@ export class UserService {
 
   getRoles(): Observable<any> {
     return this._http.get(`${this.apiUser}/roles`);
+  }
+
+  getComments(): Observable<Comment[]> {
+    return this._http.get<Comment[]>(`${this.apiUser}/comment`);
+  }
+
+  addComment(comment: CommentRequest): Observable<Comment[]> {
+    return this._http.post<Comment[]>(`${this.apiUser}/comment`, comment);
+  }
+
+  getContent(keyName: string): Observable<any> {
+    console.log('keyName:', keyName);
+    return this._http.get(`${this.apiUser}/content/${keyName}`);
   }
 }
