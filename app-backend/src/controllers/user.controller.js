@@ -291,6 +291,162 @@ userController.saveMessages = async (req, res) =>{
     }
 }
 
+userController.getMovements = async (req, res) => {
+    let connection;
+
+    const { id } = req.params;
+
+    try {
+        connection = await getConnection();
+
+        if(!id){
+            return res.status(400).send({ message: "El ID es requerido." });
+        }
+
+        connection.beginTransaction();
+        const queryCard = `
+            SELECT * FROM credit_card WHERE FK_User = ?
+        `;
+
+        const resultCard = await connection.query(queryCard, [id]);
+
+        const queryMovements = `
+            SELECT * FROM transaction WHERE FK_Card = ? ORDER BY transaction_date ASC ;
+        `;
+
+
+        const resultMovements = await connection.query(queryMovements, [resultCard[0].id]);
+
+        connection.commit();
+        const accountType = resultCard[0].account_type;
+        const cardNumber = resultCard[0].credit_card_number;
+        const movementsWithAccountType = resultMovements.map(movement => ({
+            ...movement,
+            account_type: accountType,
+            credit_card_number: cardNumber,
+            current_balance: resultCard[0].current_balance
+        }));
+
+        res.status(200).json(movementsWithAccountType);
+
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener los movimientos.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+
+}
+
+userController.getMyProfile = async (req, res) => {
+    let connection;
+    try {
+        const { id } = req.params;
+        connection = await getConnection();
+
+        if (!id) {
+            return res.status(400).send({ message: "El ID es requerido." });
+        }
+
+        const queryUser = `SELECT * FROM user_information WHERE FK_User = ?;`;
+
+        const result = await connection.query(queryUser, [id]);
+
+        const queryUserNotify = `SELECT * FROM user WHERE id = ?;`;
+
+        const resultUser = await connection.query(queryUserNotify, [id]);
+
+        const resultProfile = result.map(result => ({
+            ...result,
+            notify : resultUser[0].notifyme
+        }));
+
+        console.log(resultProfile);
+        res.status(200).json(resultProfile);
+
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        res.status(500).send({ message: "Error al obtener el perfil.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.updateProfile = async (req, res) => {
+    let connection;
+    try {
+        const {id,name, nit, phone, address, description,FK_User} = req.body;
+        connection = await getConnection();
+
+        if (!id) {
+            return res.status(400).send({ message: "El ID es requerido." });
+        }
+
+        const queryUpdateProfile = `UPDATE user_information SET name = ?,nit =?, phone = ?, address = ?, description = ? WHERE FK_User = ?;`;
+
+        const result = await connection.query(queryUpdateProfile, [name, nit, phone, address, description, FK_User]);
+
+        if( result.affectedRows === 0){
+            return res.status(400).send({ message: "El perfil no se ha podido actualizar." });
+        }
+
+        res.status(200).send({ message: "Perfil actualizado correctamente." });
+
+    } catch (error) {
+        console.log(error);
+        if (connection) {
+            await connection.rollback();
+        }
+        res.status(500).send({ message: "Error al actualizar el perfil.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.updateNotifyme = async (req, res) => {
+    let connection;
+    try {
+        const { id, notifyme } = req.body;
+        connection = await getConnection();
+
+        console.log(req.body);
+        if (!id) {
+            return res.status(400).send({ message: "El ID es requerido." });
+        }
+
+        const queryUpdateNotifyme = `UPDATE user SET notifyme = ? WHERE id = ?;`;
+        const result = await connection.query(queryUpdateNotifyme, [notifyme, id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(400).send({ message: "El perfil no se ha podido actualizar." });
+        }
+
+        res.status(200).send({ message: "Perfil actualizado correctamente." });
+
+    } catch (error) {
+        console.log(error);
+        if (connection) {
+            await connection.rollback();
+        }
+        res.status(500).send({ message: "Error al actualizar el perfil.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+
+}
 
 
 

@@ -8,6 +8,8 @@ import { DynamicPageComponent } from './components/commons/dynamic-page/dynamic-
 import { ShowCardsComponent } from './components/admin/show-cards/show-cards.component';
 import { ShowExchangeComponent } from './components/admin/show-exchange/show-exchange.component';
 import { BalanceReductionComponent } from './components/admin/balance-reduction/balance-reduction.component';
+import { ShowTransactionsComponent } from './components/user/show-transactions/show-transactions.component';
+import { EditProfileComponent } from './components/user/edit-profile/edit-profile.component';
 
 export const routes: Routes = [
     {'path': '', 'redirectTo': 'home', 'pathMatch': 'full'},
@@ -18,6 +20,10 @@ export const routes: Routes = [
     {'path': 'show-accounts', component: ShowCardsComponent},
     {'path': 'show-change', component: ShowExchangeComponent},
     {'path': 'balance-reduction', component: BalanceReductionComponent},
+    {'path': 'show-transactions', component: ShowTransactionsComponent},
+    {'path': 'edit', children: [
+        {'path': 'profile', component: EditProfileComponent},
+    ]},
     { 'path': '**', component: NotFoundComponent },
 ];
 

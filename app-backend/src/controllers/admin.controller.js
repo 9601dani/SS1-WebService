@@ -111,6 +111,14 @@ adminController.createUser = async (req, res) => {
             return res.status(400).send({ message: "Error al guardar la tarjeta." });
         }
 
+        const queryUserInformation = `INSERT INTO user_information (FK_User) VALUES (?);`;
+
+        const resultUserInformation = await connection.query(queryUserInformation, [resultUser.insertId]);
+
+        if(resultUserInformation.affectedRows === 0){
+            return res.status(400).send({ message: "Error al guardar la información del usuario." });
+        }
+
         connection.commit();
 
         res.status(200).send({ message: "Usuario guardado correctamente." });

@@ -1,0 +1,66 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="report-container">
+  <h1>Movimientos Tarjeta de Credito</h1>
+
+  <div class="date-range">
+    <label for="start-date">Fecha Inicio:</label>
+    <input type="date" id="start-date" [(ngModel)]="startDate" />
+
+    <label for="end-date">Fecha Fin:</label>
+    <input type="date" id="end-date" [(ngModel)]="endDate" />
+
+    <button (click)="fetchTransactions()">Filtrar Movimientos</button>
+    <button (click)="clearFilter()">Limpiar Filtro</button>
+  </div>
+
+  <div *ngIf="transactions.length > 0">
+    <h2>Tarjeta No. {{ formatCardNumber(transactions[0].credit_card_number) }}</h2>
+
+    <div class="account-info">
+        <div class="account-type">
+          <strong>Tipo de cuenta:</strong> {{ transactions[0].account_type }}
+        </div>
+        <div class="currency-type">
+          <strong>Moneda:</strong> {{ getCurrencySymbol(transactions[0].account_type) }}
+        </div>
+    </div>
+    
+
+    <table class="transactions-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Fee</th>
+          <th>Exchange Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let transaction of transactions; let i = index ">
+            <td>{{ i+1 }}</td>
+            <td>{{ translateTransactionType(transaction.transaction_type) }}</td>
+            <td>{{ getCurrencySymbol(transaction.account_type) }} {{ transaction.amount | number:'1.2-2' }}</td>
+            <td>{{ transaction.transaction_date | date }}</td>
+            <td>{{ transaction.description }}</td>
+            <td>{{ getCurrencySymbol(transaction.account_type) }} {{ transaction.fee | number:'1.2-2' }}</td>
+            <td>{{ transaction.exchange_rate | number:'1.4-4' }}</td>
+          </tr>
+          
+      </tbody>
+    </table>
+
+        <hr class="balance-divider">
+        <div class="current-balance">
+            <strong>Balance actual:</strong> {{ getCurrencySymbol(account_type) }} {{current_balance | number:'1.2-2' }}
+        </div>
+    
+  </div>
+
+  <div *ngIf="transactions.length === 0">
+    <p>Actualmente no hay transacciones por mostrar.</p>
+  </div>
+</div>

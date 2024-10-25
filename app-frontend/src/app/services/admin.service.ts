@@ -8,7 +8,9 @@ import { CardsResponse } from '../interfaces/interfaces';
 })
 export class AdminService {
 
-  readonly apiAdmin = 'http://localhost:3001/admin';
+  readonly host = 'http://localhost:3001';
+  readonly host2 = 'http://34.42.51.137:3001';
+  readonly apiAdmin = `${this.host}/admin`;
   constructor(
     private _http: HttpClient
   ) { }
