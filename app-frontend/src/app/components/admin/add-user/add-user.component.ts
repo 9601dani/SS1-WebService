@@ -7,6 +7,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { UserService } from "../../../services/user.service";
 import Swal from "sweetalert2";
 import {ExternalService} from "../../../services/external.service";
+import { AdminService } from '../../../services/admin.service';
 
 @Component({
   selector: 'app-add-user',
@@ -39,10 +40,11 @@ export class AddUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _userService: UserService,
-    private _externalService: ExternalService
+    private _externalService: ExternalService,
+    private _adminService: AdminService
   ) {
     this.userForm = this.fb.group({
-      accountNumber: ['', Validators.required],
+      creditCardNumber: ['', Validators.required],
       username: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -50,8 +52,46 @@ export class AddUserComponent implements OnInit {
       pin: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(4), Validators.pattern('^[0-9]*$')]],
       role: ['', Validators.required],
       accountType: ['', Validators.required],
-      creditCardType: ['', Validators.required]
+      creditCardType: ['', Validators.required],
+      creditAmount: ['', Validators.min(0)]
     }, { validator: this.passwordsMatchValidator });
+  }
+
+  generateCreditCardNumber() {
+    const randomNumber = this.generateRandomNumber(16);
+
+    this._adminService.verifyCard(randomNumber).subscribe((data: any) => {
+      if (!data) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'La tarjeta de crédito ya existe'
+        });
+      } else {
+        console.log('Tarjeta de crédito válida');
+        this.userForm.get('creditCardNumber')?.setValue(randomNumber);
+      }
+    }, error => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Error al verificar la tarjeta de crédito'
+      });
+    });
+  }
+
+  generateRandomNumber(length: number): string {
+    let result = '';
+    const characters = '0123456789';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+  }
+
+  generatePin() {
+    const randomNumber = this.generateRandomNumber(4);
+    this.userForm.get('pin')?.setValue(randomNumber);
   }
 
   passwordsMatchValidator(form: FormGroup) {
@@ -74,7 +114,23 @@ export class AddUserComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Formulario válido:', this.userForm.value);
+      this._adminService.registerUser(this.userForm.value).subscribe((data: any) => {
+        if (data) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario registrado',
+            text: 'Usuario registrado correctamente'
+          });
+          this.userForm.reset();
+        }
+      }
+      , error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: error.error.message
+        });
+      });
     } else {
       console.log('Formulario inválido');
     }
@@ -97,30 +153,6 @@ export class AddUserComponent implements OnInit {
       }
     );
   }
-  fetchAccountInfo() {
-    const accountNumber = this.userForm.get('accountNumber')?.value;
-
-    if (!accountNumber) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, ingrese un número de cuenta válido.'
-      });
-      return;
-    }
-
-    this._externalService.getAccountBank(accountNumber).subscribe(accountInfo => {
-      if (accountInfo && !accountInfo.error) {
-        this.userForm.get('username')?.setValue(accountInfo.nombre_usuario);
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Cuenta bancaria no encontrada.'
-        });
-      }
-    });
-  }
 
   generateEmail() {
     const username = this.userForm.get('username')?.value;
@@ -136,7 +168,7 @@ export class AddUserComponent implements OnInit {
       return;
     }
 
-    const email = `${username}.${accountType}@${creditCardType.toLowerCase()}.com`;
+    const email = `${username}.${accountType}@${creditCardType.toLowerCase().replace(" ",'')}.com`;
     this.userForm.get('email')?.setValue(email);
   }
 }

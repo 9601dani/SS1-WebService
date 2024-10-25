@@ -10,6 +10,7 @@ import { Comment, CommentRequest, Module } from '../interfaces/interfaces';
 export class UserService {
 
   readonly apiUser = 'http://localhost:3001/user';
+  
 
   constructor(
     private _http: HttpClient,
@@ -37,7 +38,10 @@ export class UserService {
   }
 
   getContent(keyName: string): Observable<any> {
-    console.log('keyName:', keyName);
     return this._http.get(`${this.apiUser}/content/${keyName}`);
+  }
+
+  saveMessage(data: any): Observable<any> {
+    return this._http.post(`${this.apiUser}/contact`, data);
   }
 }

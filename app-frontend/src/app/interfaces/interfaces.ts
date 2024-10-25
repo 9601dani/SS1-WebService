@@ -25,3 +25,20 @@ export interface CommentRequest{
     comment: string,
     created_at: Date
 }
+
+export interface Card {
+    credit_card_number: string;
+    expiration_date: string;
+    account_type: string;
+    credit_card_type: string;
+    state: string;
+    current_balance: string;
+    email: string;
+    username: string;
+  }
+  
+export interface CardsResponse {
+    message: string;
+    cards: Card[];
+  }
+  

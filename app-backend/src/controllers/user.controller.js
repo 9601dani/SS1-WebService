@@ -1,4 +1,5 @@
 const pbkdf2 = require('pbkdf2');
+const crypto = require('crypto');
 const data = require("../../config/db-credentials");
 const jwt = require('jsonwebtoken');
 
@@ -29,15 +30,25 @@ userController.login = async (req, res) => {
         }
 
         const user = result[0];
-        console.log('Usuario encontrado');
-        console.log(user);
-        console.log(user.email);
 
-       /*  if(user.password != password){
-            console.log('Contraseña incorrecta');
-            return res.status(401).send({ message: "La contraseña es incorrecta." });
-        } */
+        if(email == 'admin@admin.com'){
+            const storedHash = result[0].password;
 
+            const hash = crypto.createHash('sha512').update(password).digest('hex');
+
+            if(storedHash !== hash){
+                return res.status(400).send({ message: "La contraseña es incorrecta." });
+            }
+
+        }else{
+            const storedHash = result[0].password;
+            const hash = pbkdf2.pbkdf2Sync(password, data.session_key, data.iterations, data.keylen, data.digest).toString('hex');
+
+
+            if(storedHash !== hash){
+                return res.status(400).send({ message: "La contraseña es incorrecta." });
+            }
+        }
 
         const key = data.session_key;
         const token = jwt.sign({ id: user.id, email: user.email }, key, { expiresIn: "1h" });
@@ -56,6 +67,9 @@ userController.login = async (req, res) => {
         return res.status(200).send({ message: "Login correcto.", user: user, token: token });
 
     }catch(error){
+        if (connection) {
+            await connection.rollback();
+        }
         res.status(500).send({message: "Error al guardar el usuario", error: error.message});
     }finally{
         if(connection){
@@ -110,6 +124,9 @@ userController.getPages = async (req, res) => {
         res.status(200).json(modulesArray);
 
 	} catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
 		res.status(500).send({ message: "Error al obtener las páginas.", error: error.message });
 	} finally {
 		if (connection) {
@@ -130,6 +147,9 @@ userController.getRoles = async (req, res) => {
         res.status(200).json(result);
 
     } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
         res.status(500).send({ message: "Error al obtener los roles.", error: error.message });
     } finally {
         if (connection) {
@@ -156,6 +176,9 @@ userController.getComments = async (req, res) => {
         res.status(200).json(result);
 
     } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
         res.status(500).send({ message: "Error al obtener los comentarios.", error: error.message });
     } finally {
         if (connection) {
@@ -196,6 +219,9 @@ userController.createComment = async (req, res) => {
         res.status(200).json(resultComments);
 
     } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
         res.status(500).send({ message: "Error al guardar el comentario.", error: error.message });
     } finally {
         if (connection) {
@@ -221,6 +247,9 @@ userController.getContent = async (req, res) => {
         res.status(200).json(result);
 
     } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
         res.status(500).send({ message: "Error al obtener el contenido.", error: error.message });
     } finally {
         if (connection) {
@@ -228,6 +257,41 @@ userController.getContent = async (req, res) => {
         }
     }
 }
+
+userController.saveMessages = async (req, res) =>{
+    let connection;
+    try{
+        const {name, email, message} = req.body
+
+        if(!name && !email && !message){
+            return res.status(400).send({ message: "Todos los campos son requeridos." });
+        }
+
+        connection = await getConnection();
+
+        const queryInsertMessage = `INSERT INTO messages (name, email, message) VALUES (?, ?, ?);`;
+
+        const result = await connection.query(queryInsertMessage, [name, email, message]);
+
+        if(result.affectedRows === 0){
+            return res.status(400).send({ message: "El mensaje no se ha podido guardar." });
+        }
+
+        res.status(200).send({ message: "Mensaje guardado correctamente." });
+
+    }catch(error){
+        if (connection) {
+            await connection.rollback();
+        }
+    res.status(500).send({ message: "Error al guardar el mensaje.", error: error.message })
+    }finally {
+        if(connection){
+            connection.release();
+        }
+    }
+}
+
+
 
 
 

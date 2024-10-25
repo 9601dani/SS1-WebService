@@ -5,6 +5,27 @@
     <div class="dynamic-content" *ngIf="content; else loading">
       <div [innerHTML]="content"></div> 
       @if(this.keyName=='contact'){
+        <form>
+          <div class="field">
+            <label for="name" class="label">Nombre</label>
+            <div class="control">
+              <input type="text" id="name" name="name" class="input" placeholder="Tu nombre" [(ngModel)]="contactData.name">
+            </div>
+          </div>
+          <div class="field">
+            <label for="email" class="label">Correo Electrónico</label>
+            <div class="control">
+              <input type="email" id="email" name="email" class="input" placeholder="Tu correo electrónico" [(ngModel)]="contactData.email">
+            </div>
+          </div>
+          <div class="field">
+            <label for="message" class="label">Mensaje</label>
+            <div class="control">
+              <textarea id="message" name="message" class="textarea" placeholder="Escribe tu mensaje aquí" [(ngModel)]="contactData.message"></textarea>
+            </div>
+          </div>
+          <br>
+        </form>
         <div class="control">
             <button type="button" class="button is-primary" (click)="handleSubmit()">Enviar Mensaje</button>
           </div>

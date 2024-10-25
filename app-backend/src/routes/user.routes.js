@@ -10,5 +10,6 @@ router.get("/comment", userController.getComments);
 router.post("/comment",[middleware.verifyToken], userController.createComment);
 router.get("/content/:keyName", userController.getContent);
 router.get("/roles",[middleware.verifyToken], userController.getRoles);
+router.post("/contact", userController.saveMessages);
 
 module.exports = router;

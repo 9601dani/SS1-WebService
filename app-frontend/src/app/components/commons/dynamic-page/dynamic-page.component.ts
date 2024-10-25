@@ -32,7 +32,7 @@ export class DynamicPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, 
-    private contentService: UserService,
+    private _userService: UserService,
     private sanitizer: DomSanitizer
   ) {}
 
@@ -44,7 +44,7 @@ export class DynamicPageComponent implements OnInit {
   }
 
   loadContent(keyName: string) {
-    this.contentService.getContent(keyName).subscribe(
+    this._userService.getContent(keyName).subscribe(
       (response: any) => {
         if (Array.isArray(response) && response.length > 0) {
           this.content = this.sanitizer.bypassSecurityTrustHtml(response[0].key_value);
@@ -64,10 +64,29 @@ export class DynamicPageComponent implements OnInit {
   }
 
   handleSubmit() {
+    console.log('contactData:', this.contactData);
     if (this.contactData.name && this.contactData.email && this.contactData.message) {
-      console.log('Formulario enviado:', this.contactData);
-      // Aquí podrías enviar los datos a un servicio, si es necesario
-      // this.service.sendForm(this.contactData).subscribe(response => { ... });
+      this._userService.saveMessage(this.contactData).subscribe(
+        (response: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Mensaje enviado',
+            text: 'Tu mensaje ha sido enviado correctamente.',
+          });
+          this.contactData = {
+            name: '',
+            email: '',
+            message: ''
+          };
+        },
+        (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Hubo un error al enviar el mensaje. Intenta más tarde.',
+          });
+        }
+      );
     } else {
       Swal.fire({
         icon: 'error',
