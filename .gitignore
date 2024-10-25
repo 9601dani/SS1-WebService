@@ -142,7 +142,12 @@ e-backend/.vscode/
 # ignorar imagenes carpeta public
 # e-backend/msImg/public
 
-# Ignorar el archivo .env
+# Ignorar el archivo dev.env
+e-backend/dev.env
+**/dev.env
 .env
 
 app-backend/config/
+
+.idea/
+.idea/*

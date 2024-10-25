@@ -1,0 +1,40 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="title">TARJETAS BANCARIAS</h1>
+
+  <input 
+    type="text" 
+    placeholder="Buscar por username, tipo de cuenta o tipo de tarjeta" 
+    [(ngModel)]="searchTerm" 
+    class="search-input"
+  />
+
+  <div class="card-container">
+    <div 
+      class="card" 
+      *ngFor="let card of filteredCards()">
+      <h3>Tarjeta de: {{ card.username }}</h3>
+      <p><strong>Número de tarjeta:</strong> {{ card.credit_card_number }}</p>
+      <p><strong>Fecha de expiración:</strong> {{ card.expiration_date }}</p>
+      <p style="text-transform: uppercase;"><strong>Tipo de cuenta:</strong> {{ card.account_type }}</p>
+      <p><strong>Tipo de tarjeta:</strong> {{ card.credit_card_type }}</p>
+      <p>
+        <strong>Estado:</strong>
+        {{ card.state === 'active' ? 'Activo' : card.state === 'disabled' ? 'Deshabilitado' : 'Bloqueado' }}
+      </p>      
+      <p>
+        <strong>Saldo actual:</strong>
+        {{ card.account_type === 'normal' ? 'Q' : '$' }}{{ card.current_balance }}
+      </p>
+      <p><strong>Email:</strong> {{ card.email }}</p>
+
+      <div *ngIf="card.state === 'active'">
+        <button class="disable-button" (click)="deshabilitarTarjeta(card)">Deshabilitar</button>
+      </div>
+      <div *ngIf="card.state === 'disabled'">
+        <button class="enable-button" (click)="habilitarTarjeta(card)">Habilitar</button>
+      </div>
+    </div>
+  </div>
+</div>

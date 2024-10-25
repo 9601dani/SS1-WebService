@@ -1,1 +1,52 @@
-<p>login works!</p>
+<app-navbar></app-navbar>
+
+<div class="container-login">
+  
+  <div class="login-box">
+    
+    <div class="login-form">
+      
+      <h1 class="title">Iniciar Sesión</h1>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="field">
+          <label class="label">Correo Electrónico</label>
+          <div class="control has-icons-left">
+            <input class="input" type="text" formControlName="usernameOrEmail" placeholder="Correo Electrónico" required>
+            <span class="icon">
+              <i class="fas fa-user"></i>
+            </span>
+          </div>
+          <p class="error-text" *ngIf="loginForm.get('usernameOrEmail')?.hasError('required')">
+            Este campo es requerido
+          </p>
+        </div>
+
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control has-icons-left">
+            <input class="input" [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Contraseña" required>
+            <i class="fas" [ngClass]="hidePassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()" class="password-toggle"></i>
+          </div>
+          <p class="error-text" *ngIf="passwordHasErrorRequired">
+            Este campo es requerido
+          </p>
+        </div>
+
+        <div class="field">
+          <button class="button-submit" type="submit" [disabled]="loginForm.invalid || isLoading">
+            Inicio de Sesión
+            <div *ngIf="isLoading" class="loader"></div>
+          </button>
+        </div>
+      </form>
+
+      <div class="forgot-password">
+        <p>Recordar Pin
+          <a href="javascript:void(0)" (click)="forgotPassword()">¡Recordar!</a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

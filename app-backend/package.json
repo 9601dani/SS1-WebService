@@ -11,8 +11,10 @@
   "description": "",
   "dependencies": {
     "@angular/cli": "^18.2.7",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
     "log4js": "^6.9.1",
     "mariadb": "^3.3.2",
     "mysql2": "^3.11.3",
