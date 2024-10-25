@@ -1,0 +1,204 @@
+
+$primary-color: #3273dc;
+$secondary-color: #f5f5f5;
+$text-color: #363636;
+$border-color: #ddd;
+$container-max-width: 1200px;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+.page-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .left-column, .right-column {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 8px $shadow-color;
+    width: 48%; 
+  }
+
+  .left-column {
+    background-color: $secondary-color;
+  }
+
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .left-column, .right-column {
+      width: 100%; 
+      margin-bottom: 20px; 
+    }
+  }
+}
+
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: $text-color;
+  margin-bottom: 20px;
+}
+
+
+.feeds-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    margin-bottom: 15px;
+
+    a {
+      font-size: 18px;
+      font-weight: bold;
+      display: block;
+      padding: 10px;
+      background-color: $secondary-color;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: lighten($secondary-color, 10%);
+      }
+    }
+  }
+}
+
+.comment-box {
+  background-color: white;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px $shadow-color;
+
+  .media {
+    display: flex;
+    align-items: flex-start;
+
+    .media-content {
+      flex-grow: 1;
+
+      .content {
+        p {
+          margin: 0 0 10px;
+          color: $text-color;
+          font-size: 16px;
+        }
+
+        strong {
+          font-size: 18px;
+          color: $primary-color;
+        }
+
+        small {
+          color: gray;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+.notification {
+  background-color: #ffdd57;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  color: $text-color;
+}
+
+
+.add-comment-section {
+    margin-top: 40px;
+    padding: 20px 0;
+    background-color: #f9f9f9;
+  
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  
+    .title {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #363636;
+    }
+  
+    .field {
+      margin-bottom: 1.5rem;
+  
+      .label {
+        font-size: 16px;
+        margin-bottom: 0.5rem;
+        color: #363636;
+      }
+  
+      .input, .textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #363636;
+  
+        &:focus {
+          border-color: #3498db;
+          outline: none;
+        }
+      }
+  
+      .textarea {
+        min-height: 150px;
+      }
+    }
+  
+    .button-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+  
+      &:hover {
+        background-color: darken(#3498db, 10%);
+      }
+    }
+  }
+  
+
+  @media (max-width: 768px) {
+    .add-comment-section .container {
+      padding: 20px;
+    }
+  
+    .title {
+      font-size: 24px;
+    }
+  
+    .input, .textarea {
+      padding: 0.5rem;
+      font-size: 14px;
+    }
+  
+    .button-submit {
+      font-size: 14px;
+      padding: 0.5rem;
+    }
+  }

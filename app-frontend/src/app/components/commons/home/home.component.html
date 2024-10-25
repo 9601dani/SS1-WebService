@@ -1,1 +1,63 @@
-<p>home works!</p>
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="container page-layout">
+  
+  <section class="left-column">
+    <h2 class="title">Feeds del sitio</h2>
+    <ul class="feeds-list">
+        <li><a (click)="goToPage('sitemap')">Mapa del sitio</a></li>
+        <li><a (click)="goToPage('faq')">Preguntas Frecuentes (FAQ's)</a></li>
+        <li><a (click)="goToPage('contact')">Contacto</a></li>
+        <li><a (click)="goToPage('privacy-policy')">Política de Privacidad</a></li>
+        <li><a (click)="goToPage('terms')">Términos y Condiciones</a></li>
+        <li><a (click)="goToPage('support')">Ayuda / Soporte</a></li>
+    </ul>
+  </section>
+
+  <section class="right-column comments-section">
+    <h2 class="title">Comentarios</h2>
+
+    <div *ngIf="comments.length > 0; else noComments">
+      <div *ngFor="let comment of comments" class="comment-box">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>{{ comment.email }}</strong> <br>
+                {{ comment.comment }}
+                <br>
+                <small>Publicado el: {{ comment.created_at}}</small>
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <ng-template #noComments>
+      <div class="notification">
+        No hay comentarios disponibles en este momento.
+      </div>
+    </ng-template>
+  </section>
+
+</div>
+
+@if(this.isLogged){
+    <section class="add-comment-section">
+        <div class="container">
+          <h2 class="title">Agrega un comentario</h2>
+          
+          <form (ngSubmit)="addComment()">
+            <div class="field">
+              <label for="comment" class="label">Comentario</label>
+              <textarea id="comment" [(ngModel)]="newComment.comment" name="comment" class="textarea" placeholder="Escribe tu comentario aquí" required></textarea>
+            </div>
+      
+            <div class="field">
+              <button type="submit" class="button-submit">Enviar Comentario</button>
+            </div>
+          </form>
+        </div>
+      </section>
+}

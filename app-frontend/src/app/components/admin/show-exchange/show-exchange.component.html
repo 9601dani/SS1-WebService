@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+
+<div class="exchange-container">
+  <div class="exchange-box">
+    <h1>Tipo de Cambio</h1>
+
+    <div class="current-exchange box">
+      <h2>Cambio Actual</h2>
+      <p>{{ exchange ? '$1 = Q' + exchange : 'Cargando...' }}</p>
+    </div>
+
+    <div class="update-exchange box">
+      <h2>Actualizar Tipo de Cambio</h2>
+      <input type="number" placeholder="Nuevo tipo de cambio" [(ngModel)]="newExchangeRate">
+      <button (click)="updateChange()">Actualizar</button>
+    </div>
+  </div>
+</div>
