@@ -6,9 +6,9 @@
     
     <div class="login-form">
       
-      <h1 class="title">Iniciar Sesión</h1>
+      <h1 class="title">{{ isRecoverPassword ? 'Recuperación de Contraseña' : 'Iniciar Sesión' }}</h1>
 
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <form *ngIf="!isRecoverPassword" [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="field">
           <label class="label">Correo Electrónico</label>
           <div class="control has-icons-left">
@@ -41,8 +41,56 @@
         </div>
       </form>
 
-      <div class="forgot-password">
+      <form *ngIf="isRecoverPassword" [formGroup]="recoverPasswordForm" (ngSubmit)="updatePassword()">
+
+        <div class="field">
+          <label class="label">Correo Electronico</label>
+          <div class="control">
+            <input class="input" type="email" formControlName="email" placeholder="Correo Electronico" required>
+          </div>
+          <p class="error-text" *ngIf="recoverPasswordForm.get('email')?.hasError('required')">
+            Este campo es requerido
+          </p>
+        </div>
+
+        <div class="field">
+          <label class="label">Nueva Contraseña</label>
+          <div class="control">
+            <input class="input" type="password" formControlName="newPassword" placeholder="Nueva Contraseña" required>
+          </div>
+          <p class="error-text" *ngIf="recoverPasswordForm.get('newPassword')?.hasError('required')">
+            Este campo es requerido
+          </p>
+        </div>
+
+        <div class="field">
+          <label class="label">Confirmar Contraseña</label>
+          <div class="control">
+            <input class="input" type="password" formControlName="confirmPassword" placeholder="Confirmar Contraseña" required>
+          </div>
+          <p class="error-text" *ngIf="recoverPasswordForm.get('confirmPassword')?.hasError('required')">
+            Este campo es requerido
+          </p>
+          <p class="error-text" *ngIf="recoverPasswordForm.get('confirmPassword')?.value !== recoverPasswordForm.get('newPassword')?.value">
+            Las contraseñas no coinciden
+          </p>
+        </div>
+
+        <div class="field">
+          <button class="button-submit" type="submit" [disabled]="recoverPasswordForm.invalid">
+            Actualizar Contraseña
+          </button>
+        </div>
+      </form>
+
+      <div *ngIf="!isRecoverPassword" class="forgot-password">
         <p>Recordar Pin
+          <a href="javascript:void(0)" (click)="forgotPin()">¡Recordar!</a>
+        </p>
+      </div>
+
+      <div *ngIf="!isRecoverPassword" class="forgot-password">
+        <p>Recordar Contraseña
           <a href="javascript:void(0)" (click)="forgotPassword()">¡Recordar!</a>
         </p>
       </div>

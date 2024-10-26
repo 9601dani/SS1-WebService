@@ -3,6 +3,15 @@ const crypto = require('crypto');
 const data = require("../../config/db-credentials");
 const jwt = require('jsonwebtoken');
 
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: data.email_send,
+        pass: data.email_send_password
+    }
+});
 
 const getConnection = require("../../db/db.js");
 
@@ -366,7 +375,6 @@ userController.getMyProfile = async (req, res) => {
             notify : resultUser[0].notifyme
         }));
 
-        console.log(resultProfile);
         res.status(200).json(resultProfile);
 
     } catch (error) {
@@ -420,7 +428,6 @@ userController.updateNotifyme = async (req, res) => {
         const { id, notifyme } = req.body;
         connection = await getConnection();
 
-        console.log(req.body);
         if (!id) {
             return res.status(400).send({ message: "El ID es requerido." });
         }
@@ -446,6 +453,114 @@ userController.updateNotifyme = async (req, res) => {
         }
     }
 
+}
+
+userController.forgotPassword = async (req, res) => {
+    let connection;
+    try {
+        const { email, password } = req.body;
+        connection = await getConnection();
+
+        if (!email ) {
+            return res.status(400).send({ message: "El email es requerido." });
+        }
+
+        if(!password){
+            return res.status(400).send({ message: "La contraseña es requerida." });
+        }
+
+        const queryUser = `SELECT * FROM user WHERE email = ?;`;
+
+        const result = await connection.query(queryUser, [email]);
+
+        if (result.length === 0) {
+            return res.status(400).send({ message: "El usuario no existe." });
+        }
+
+        const queryUpdatePassword = `UPDATE user SET password = ? WHERE email = ?;`;
+
+        const hash = pbkdf2.pbkdf2Sync(password, data.session_key, data.iterations, data.keylen, data.digest).toString('hex');
+
+        const resultUpdate = await connection.query(queryUpdatePassword, [hash, email]);
+
+        if (resultUpdate.affectedRows === 0) {
+            return res.status(400).send({ message: "La contraseña no se ha podido actualizar." });
+        }
+
+        res.status(200).send({ message: "Contraseña actualizada correctamente." });
+
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        res.status(500).send({ message: "Error al generar el token.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+userController.forgotPin = async (req, res) => {
+    let connection;
+    try {
+        const { card } = req.params;
+        let { email } = req.body;
+
+        email = 'danielmoralesxicara@gmail.com';
+        connection = await getConnection();
+
+        if (!card) {
+            return res.status(400).send({ message: "El número de tarjeta es requerido." });
+        }
+
+        if (!email) {
+            return res.status(400).send({ message: "El correo electrónico es requerido." });
+        }
+
+        const queryCard = `SELECT * FROM credit_card WHERE credit_card_number = ?;`;
+        const result = await connection.query(queryCard, [card]);
+
+        if (result.length === 0) {
+            return res.status(400).send({ message: "La tarjeta no existe." });
+        }
+
+        const cardResult = result[0];
+        const queryUser = `SELECT * FROM user WHERE id = ?;`;
+        const resultUser = await connection.query(queryUser, [cardResult.FK_User]);
+
+        if (resultUser.length === 0) {
+            return res.status(400).send({ message: "El usuario no existe." });
+        }
+
+        const user = resultUser[0];
+        const pin = user.pin;
+
+        const mailOptions = {
+            from: '"Recuperación de PIN" <tu-correo@gmail.com>',
+            to: email,
+            subject: 'Tu PIN de recuperación',
+            text: `Tu PIN es: ${pin}`,
+            html: `<b>Tu PIN es: ${pin}</b>
+            <p>Por favor, no compartas esta información con nadie.</p>
+            <p>Se envio al correo: ${user.email}</p>`
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.status(200).send({ message: "El PIN ha sido enviado a tu correo electrónico.", pin: pin });
+
+    } catch (error) {
+        console.log(error);
+        if (connection) {
+            await connection.rollback();
+        }
+        res.status(500).send({ message: "Error al recuperar el PIN.", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
 }
 
 

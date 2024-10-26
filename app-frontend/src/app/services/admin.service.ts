@@ -44,4 +44,20 @@ export class AdminService {
     return this._http.get(`${this.apiAdmin}/get-card/${cardNumber}`);
   }
 
+  getReportOne(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report1`);
+  }
+
+  getReportTwo(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report2`);
+  }
+
+  getReportThree(card: string): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report3/${card}`);
+  }
+
+  getReportFour(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report4`);
+  }
+
 }

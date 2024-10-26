@@ -57,3 +57,4 @@ export interface CardsResponse {
     credit_card_number: string;
     current_balance: number;
   }
+

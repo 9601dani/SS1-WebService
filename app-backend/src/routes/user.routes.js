@@ -15,4 +15,6 @@ router.get("/transactions/:id",[middleware.verifyToken], userController.getMovem
 router.get("/profile/:id",[middleware.verifyToken], userController.getMyProfile);
 router.post("/profile",[middleware.verifyToken], userController.updateProfile);
 router.put("/notifications",[middleware.verifyToken], userController.updateNotifyme);
+router.put("/password", userController.forgotPassword);
+router.get("/forgot-pin/:card", userController.forgotPin);
 module.exports = router;

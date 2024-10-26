@@ -62,4 +62,13 @@ export class UserService {
   updateNotifications(data: any): Observable<any> {
     return this._http.put(`${this.apiUser}/notifications`, data);
   }
+
+  recoverPin(card: number): Observable<any> {
+    return this._http.get(`${this.apiUser}/forgot-pin/${card}`);
+  }
+
+  updatePassword(email: any, password: any): Observable<any> {
+    const data = {email, password};
+    return this._http.put(`${this.apiUser}/password`, data);
+  }
 }

@@ -1,0 +1,52 @@
+.container {
+    margin-top: 20px;
+  }
+  
+  .title {
+    color: #3273dc;
+    margin-bottom: 10px;
+  }
+  
+  .card-container {
+    margin-bottom: 20px;
+  }
+  
+  .card-blocked {
+    padding: 15px;
+    border: 1px solid #dbdbdb;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .field {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+  
+  .field label {
+    font-weight: bold;
+    color: #4a4a4a;
+  }
+  
+  .field span {
+    color: #363636;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .card-blocked {
+      padding: 12px;
+      font-size: 14px;
+    }
+  
+    .field {
+      display: block;
+      padding: 6px 0;
+    }
+  
+    .field label {
+      margin-bottom: 4px;
+    }
+  }
+  
