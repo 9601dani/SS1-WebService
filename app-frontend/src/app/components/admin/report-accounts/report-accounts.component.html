@@ -1,0 +1,87 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="title">Reporte de Cuentas por Estado</h1>
+
+  <div class="columns">
+    <div class="column is-half">
+      <div class="box">
+        <h2 class="subtitle">Cuentas Activas</h2>
+        <p>Total de cuentas activas: {{ accounts[0]?.Total_Cuentas }}</p>
+
+        <div *ngFor="let card of active_accounts">
+          <div class="card-block">
+            <div class="field">
+              <label>Tipo de Cuenta:</label>
+              <span>{{ toUpperCase(card.account_type) }}</span>
+            </div>
+            <div class="field">
+              <label>Número de Tarjeta:</label>
+              <span>**** **** **** {{ card.credit_card_number.slice(-4) }}</span>
+            </div>
+            <div class="field">
+              <label>Tipo de Tarjeta:</label>
+              <span>{{ card.credit_card_type }}</span>
+            </div>
+            <div class="field">
+              <label>Límite de Crédito:</label>
+              <span>{{ getCurrencySymbol(card.account_type) }}{{ card.credit_limit }}</span>
+            </div>
+<!--             <div class="field">
+              <label>Saldo Actual:</label>
+              <span>{{ getCurrencySymbol(card.account_type) }}{{ card.current_balance }}</span>
+            </div> -->
+            <div class="field">
+              <label>Fecha de Creación:</label>
+              <span>{{ formatDate(card.created_at) }}</span>
+            </div>
+            <div class="field">
+              <label>Fecha de Expiración:</label>
+              <span>{{ card.expiration_date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="column is-half">
+      <div class="box">
+        <h2 class="subtitle">Cuentas Inactivas</h2>
+        <p>Total de cuentas inactivas: {{ accounts[1]?.Total_Cuentas }}</p>
+
+        <div *ngFor="let card of disabled_accounts">
+          <div class="card-block">
+            <div class="field">
+                <label>Tipo de Cuenta:</label>
+                <span>{{ toUpperCase(card.account_type) }}</span>
+            </div>              
+            <div class="field">
+              <label>Número de Tarjeta:</label>
+              <span>**** **** **** {{ card.credit_card_number.slice(-4) }}</span>
+            </div>
+            <div class="field">
+              <label>Tipo de Tarjeta:</label>
+              <span>{{ card.credit_card_type }}</span>
+            </div>
+            <div class="field">
+              <label>Límite de Crédito:</label>
+              <span>{{ getCurrencySymbol(card.account_type) }}{{ card.credit_limit }}</span>
+            </div>
+<!--             <div class="field">
+              <label>Saldo Actual:</label>
+              <span>{{ getCurrencySymbol(card.account_type) }}{{ card.current_balance }}</span>
+            </div> -->
+            <div class="field">
+              <label>Fecha de Creación:</label>
+              <span>{{ formatDate(card.created_at) }}</span>
+            </div>
+            <div class="field">
+              <label>Fecha de Expiración:</label>
+              <span>{{ card.expiration_date }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+<br><br><br>
+<div class="profile-container">
+    <h1 class="title">Editar Perfil</h1>
+  
+    <form [formGroup]="profileForm" class="form" (ngSubmit)="saveProfile()">
+        <div class="form-grid">
+<!--           <div class="form-field">
+            <label for="id">ID</label>
+            <input type="text" id="id" formControlName="id"  />
+          </div> -->
+          <div class="form-field">
+            <label for="fk_user">Id del Usuario</label>
+            <input type="text" id="fk_user" formControlName="FK_User"  />
+          </div>
+          <div class="form-field">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" formControlName="name" placeholder="Nombre" />
+          </div>
+          <div class="form-field">
+            <label for="nit">NIT</label>
+            <input type="text" id="nit" formControlName="nit" placeholder="NIT" />
+          </div>
+          <div class="form-field">
+            <label for="address">Dirección</label>
+            <input type="text" id="address" formControlName="address" placeholder="Dirección" />
+          </div>
+          <div class="form-field">
+            <label for="phone">Teléfono</label>
+            <input type="text" id="phone" formControlName="phone" placeholder="Teléfono" />
+          </div>
+          <div class="form-field">
+            <label for="description">Descripción</label>
+            <input type="text" id="description" formControlName="description" placeholder="Descripción" />
+          </div>
+        </div>
+      
+        <div class="form-actions">
+          <button type="submit" class="button">Guardar</button>
+        </div>
+      </form>
+      
+
+    <hr class="divider">
+  
+    <div class="security-section">
+        <h2 class="subtitle">Seguridad</h2>
+        <p>¿Desea ser notificado de sus transacciones?</p>
+        <div class="radio-buttons">
+          <label class="radio">
+            <input type="radio" name="notifications" [(ngModel)]="notifications" value="yes" (change)="onNotificationChange('yes')" /> Sí
+          </label>
+          <label class="radio">
+            <input type="radio" name="notifications" [(ngModel)]="notifications" value="no" (change)="onNotificationChange('no')" /> No
+          </label>
+        </div>
+      </div>
+  </div>
+  

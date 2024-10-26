@@ -111,6 +111,14 @@ adminController.createUser = async (req, res) => {
             return res.status(400).send({ message: "Error al guardar la tarjeta." });
         }
 
+        const queryUserInformation = `INSERT INTO user_information (FK_User) VALUES (?);`;
+
+        const resultUserInformation = await connection.query(queryUserInformation, [resultUser.insertId]);
+
+        if(resultUserInformation.affectedRows === 0){
+            return res.status(400).send({ message: "Error al guardar la información del usuario." });
+        }
+
         connection.commit();
 
         res.status(200).send({ message: "Usuario guardado correctamente." });
@@ -408,6 +416,197 @@ adminController.reduceBalance = async (req, res) => {
         }
     }
 }
+
+adminController.getReport1 = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        connection.beginTransaction();
+
+        const queryReport = `
+            SELECT
+                t.transaction_date AS Fecha,
+                t.transaction_type AS Tipo_Movimiento,
+                t.amount AS Monto,
+                c.credit_card_number AS Numero_Cuenta,
+                c.account_type AS Tipo_Cuenta
+            FROM
+                transaction t
+                    JOIN
+                credit_card c ON t.FK_Card = c.id
+            ORDER BY t.transaction_date ASC;
+        `;
+
+        const result = await connection.query(queryReport);
+
+        result.forEach(card => {
+            if (card.Numero_Cuenta && typeof card.Numero_Cuenta === 'string') {
+                card.Numero_Cuenta = `**** **** **** ${card.Numero_Cuenta.slice(-4)}`;
+            }
+        });
+
+        connection.commit();
+
+        res.status(200).send({ message: "Reporte obtenido correctamente.", result: result });
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener el reporte", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+adminController.getReport2 = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        connection.beginTransaction();
+
+        const queryReport = `
+            SELECT
+                c.credit_card_number AS Numero_Tarjeta,
+                c.state AS Estado,
+                r.report_type AS Motivo_Bloqueo,
+                r.generated_at AS Fecha_Bloqueo
+            FROM
+                credit_card c
+                    JOIN
+                credit_card_report r ON c.id = r.FK_Card
+            WHERE
+                c.state = 'disabled'
+            ORDER BY r.generated_at DESC;
+        `;
+
+        const result = await connection.query(queryReport);
+
+        result.forEach(card => {
+            if (card.Numero_Tarjeta && typeof card.Numero_Tarjeta === 'string') {
+                card.Numero_Tarjeta = `**** **** **** ${card.Numero_Tarjeta.slice(-4)}`;
+            }
+        });
+
+        connection.commit();
+
+        res.status(200).send({ message: "Reporte obtenido correctamente.", result: result });
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener el reporte", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+adminController.getReport3 = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        connection.beginTransaction();
+
+        const queryReport = `
+            SELECT
+                u.email AS Correo_Usuario,
+                u.username AS Nombre_Usuario,
+                cc.credit_card_number AS Numero_Tarjeta,
+                cc.account_type AS Tipo_Cuenta,
+                cc.credit_limit AS Limite_Credito,
+                cc.current_balance AS Saldo_Actual,
+                cc.created_at AS Fecha_Creacion
+            FROM
+                credit_card cc
+                    JOIN
+                user u ON cc.FK_User = u.id
+            WHERE
+                cc.credit_card_number = ?;
+        `;
+
+        const result = await connection.query(queryReport, [req.params.card]);
+
+        connection.commit();
+
+        res.status(200).send({ message: "Reporte obtenido correctamente.", result: result });
+    } catch (error) {
+        console.log('error', error);
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener el reporte", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+adminController.getReport4 = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        connection.beginTransaction();
+
+        const queryReport = `
+            SELECT
+                cc.state AS Estado_Cuenta,
+                COUNT(*) AS Total_Cuentas
+            FROM
+                credit_card cc
+            GROUP BY
+                cc.state;
+        `;
+
+        const result = await connection.query(queryReport);
+        const queryDisabled = `SELECT * FROM credit_card WHERE state = 'disabled';`;
+        const resultDisabled = await connection.query(queryDisabled);
+
+        const queryActive = `SELECT * FROM credit_card WHERE state = 'active';`;
+        const resultActive = await connection.query(queryActive);
+
+        connection.commit();
+
+        const parseBigIntToString = (obj) => {
+            return JSON.parse(JSON.stringify(obj, (key, value) =>
+                typeof value === 'bigint' ? value.toString() : value
+            ));
+        };
+
+        const resultParsed = parseBigIntToString(result);
+        const resultDisabledParsed = parseBigIntToString(resultDisabled);
+        const resultActiveParsed = parseBigIntToString(resultActive);
+
+        res.status(200).send({
+            message: "Reporte obtenido correctamente.",
+            result: resultParsed,
+            disabled: resultDisabledParsed,
+            active: resultActiveParsed
+        });
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener el reporte", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+
 
 
 module.exports = adminController;

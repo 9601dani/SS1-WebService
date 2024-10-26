@@ -11,4 +11,9 @@ router.put('/update-exchange', adminController.updateExchange);
 router.get('/get-card/:card', adminController.getCard);
 router.put('/reduce-balance', adminController.reduceBalance);
 
+router.get('/report1', adminController.getReport1);
+router.get('/report2', adminController.getReport2);
+router.get('/report3/:card', adminController.getReport3);
+router.get('/report4', adminController.getReport4);
+
 module.exports = router;

@@ -8,7 +8,9 @@ import { CardsResponse } from '../interfaces/interfaces';
 })
 export class AdminService {
 
-  readonly apiAdmin = 'http://localhost:3001/admin';
+  readonly host = 'http://localhost:3001';
+  readonly host2 = 'http://34.42.51.137:3001';
+  readonly apiAdmin = `${this.host}/admin`;
   constructor(
     private _http: HttpClient
   ) { }
@@ -40,6 +42,22 @@ export class AdminService {
 
   getCardByNumber(cardNumber: string): Observable<any> {
     return this._http.get(`${this.apiAdmin}/get-card/${cardNumber}`);
+  }
+
+  getReportOne(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report1`);
+  }
+
+  getReportTwo(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report2`);
+  }
+
+  getReportThree(card: string): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report3/${card}`);
+  }
+
+  getReportFour(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report4`);
   }
 
 }
