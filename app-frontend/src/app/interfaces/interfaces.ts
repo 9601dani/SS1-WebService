@@ -42,3 +42,19 @@ export interface CardsResponse {
     cards: Card[];
   }
   
+
+  export interface Transaction{
+    id: number;
+    FK_Card: number;
+    transaction_type: string;
+    amount: number;
+    transaction_date: string;
+    description: string;
+    is_authorized: number;
+    fee: number;
+    exchange_rate: number;
+    account_type: string;
+    credit_card_number: string;
+    current_balance: number;
+  }
+

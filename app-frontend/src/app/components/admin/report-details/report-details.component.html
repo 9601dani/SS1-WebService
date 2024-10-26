@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="title">Información de Tarjeta de Crédito</h1>
+
+  <div class="field">
+    <label class="label">Ingrese el Número de Tarjeta</label>
+    <div class="control">
+      <input class="input" type="text" [(ngModel)]="cardNumber" placeholder="Ingrese Numero de Tarjeta">
+    </div>
+    <div class="control">
+      <button class="button is-primary" (click)="getCardInfo()">Buscar</button>
+    </div>
+  </div>
+
+  <div *ngIf="cardInfo" class="card-container">
+    <div class="card-detail">
+      <div class="field">
+        <label>Correo del Usuario:</label>
+        <span>{{ cardInfo.Correo_Usuario }}</span>
+      </div>
+      <div class="field">
+        <label>Nombre del Usuario:</label>
+        <span>{{ cardInfo.Nombre_Usuario }}</span>
+      </div>
+      <div class="field">
+        <label>Número de Tarjeta:</label>
+        <span>{{ cardInfo.Numero_Tarjeta }}</span>
+      </div>
+      <div class="field">
+        <label>Tipo de Cuenta:</label>
+        <span>{{ translateAccountType(cardInfo.Tipo_Cuenta) }}</span>
+      </div>
+      <div class="field">
+        <label>Límite de Crédito:</label>
+        <span>{{ cardInfo.Tipo_Cuenta === 'gold' ? '$' : 'Q' }}{{ cardInfo.Limite_Credito }}</span>
+      </div>
+      <div class="field">
+        <label>Saldo Actual:</label>
+        <span>{{ cardInfo.Tipo_Cuenta === 'gold' ? '$' : 'Q' }}{{ cardInfo.Saldo_Actual }}</span>
+      </div>      
+      <div class="field">
+        <label>Fecha de Creación:</label>
+        <span>{{ formatDate(cardInfo.Fecha_Creacion) }}</span>
+      </div>
+    </div>
+  </div>
+</div>

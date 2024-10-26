@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="title">Tarjetas Bloqueadas</h1>
+
+  <div class="card-container" *ngFor="let card of blockedCards">
+    <div class="card-blocked">
+      <div class="field">
+        <label>Número de Tarjeta:</label>
+        <span>{{ card.Numero_Tarjeta }}</span>
+      </div>
+      <div class="field">
+        <label>Estado:</label>
+        <span>{{ card.Estado }}</span>
+      </div>
+      <div class="field">
+        <label>Motivo de Bloqueo:</label>
+        <span>{{ translateReason(card.Motivo_Bloqueo) }}</span>
+      </div>
+      <div class="field">
+        <label>Fecha de Bloqueo:</label>
+        <span>{{ formatDate(card.Fecha_Bloqueo) }}</span>
+      </div>
+    </div>
+  </div>
+</div>

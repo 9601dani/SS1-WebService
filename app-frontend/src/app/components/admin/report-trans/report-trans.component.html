@@ -1,0 +1,43 @@
+<app-navbar></app-navbar>
+
+<div class="container">
+  <h1 class="title">Reporte de Transacciones</h1>
+
+  <div class="field is-grouped">
+    <div class="control">
+      <label class="label">Desde</label>
+      <input class="input" type="date" [(ngModel)]="startDate">
+    </div>
+    <div class="control">
+      <label class="label">Hasta</label>
+      <input class="input" type="date" [(ngModel)]="endDate">
+    </div>
+    <div class="control">
+      <button class="button is-primary" (click)="filterByDate()">Filtrar</button>
+    </div>
+    <div class="control">
+      <button class="button is-light" (click)="clearFilters()">Limpiar</button>
+    </div>
+  </div>
+
+  <div class="transaction-container" *ngFor="let transaction of filteredTransactions">
+    <div class="transaction">
+      <div class="field">
+        <label>Fecha:</label>
+        <span>{{ formatDate(transaction.Fecha) }}</span>
+      </div>
+      <div class="field">
+        <label>Tipo de Movimiento:</label>
+        <span>{{ transaction.Tipo_Movimiento }}</span>
+      </div>
+      <div class="field">
+        <label>Monto:</label>
+        <span>{{ transaction.Tipo_Cuenta === 'gold' ? '$' : 'Q' }}{{ transaction.Monto }}</span>
+      </div>
+      <div class="field">
+        <label>Número de Cuenta:</label>
+        <span>{{ transaction.Numero_Cuenta }}</span>
+      </div>
+    </div>
+  </div>
+</div>

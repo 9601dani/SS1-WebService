@@ -59,4 +59,8 @@ controller.verifyToken = async (req, res, next) => {
     }
 };
 
+controller.verifyTokenApi = async (req, res, next) => {
+
+}
+
 module.exports = controller;
