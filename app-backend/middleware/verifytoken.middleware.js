@@ -61,6 +61,52 @@ controller.verifyToken = async (req, res, next) => {
 
 controller.verifyTokenApi = async (req, res, next) => {
 
+    if (req.method === "OPTIONS") {
+        return res.sendStatus(200);
+    }
+
+    const token = req.header("Authorization") ? req.header("Authorization").replace("Bearer ", "") : null;
+
+    if (!token) {
+        console.log("No token provided");
+        return res.status(401).send({ message: "No token provided" });
+    }
+
+    let connec;
+
+    try {
+        connec = await getConnection();
+        jwtKey = data.session_key;
+
+        let decoded = { name: "TokenExpiredError" };
+        try {
+            decoded = jwt.verify(token, jwtKey);
+        } catch (error) {
+            console.log(error);
+            return res.status(401).send({ message: "Sesión expirada, vuelva a solicitar un token", error: error.message });
+        }
+
+        if (decoded.name === "TokenExpiredError") {
+            return res.status(401).send({ message: "El token ha expirado. Por favor, solicita un token de nuevo." });
+        }
+
+        const sql = `SELECT * from api_keys WHERE auth_token = ? AND client_id = ?`;
+        const result_token = await connec.query(sql, [token, decoded.clientId]);
+
+        if (result_token.length === 0) {
+            console.log("Token no existe");
+            return res.status(401).send({ message: "Token no existe" });
+        }
+
+        next();
+    } catch (error) {
+        console.log(error);
+        return res.status(401).send({ message: "Sesión expirada, vuelva a iniciar sesión", error: error.message });
+    } finally {
+        if (connec) {
+            connec.release();
+        }
+    }
 }
 
 module.exports = controller;
