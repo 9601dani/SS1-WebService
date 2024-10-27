@@ -4,8 +4,7 @@ const router = express.Router();
 const apiController = require('../controllers/api.controller');
 
 router.get('/auth/token', apiController.getToken);
-//ruta para obtener la info de la tarjeta
-
-//ruta para hacer un pago
+router.get('/card', apiController.getCard);
+router.post('/pay', apiController.pay);
 
 module.exports = router;

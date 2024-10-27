@@ -11,8 +11,8 @@ adminController.getUsers = async (req, res) => {
     let connection;
 
     try{
-        connection.beginTransaction();
         connection = await getConnection();
+        connection.beginTransaction();
 
         const queryUsers = `SELECT * FROM credit_card_user;`;
 
@@ -36,7 +36,7 @@ adminController.getUsers = async (req, res) => {
 
 adminController.createUser = async (req, res) => {
     credit_limit_gold = 1000;
-    credit_limit_normal = 5000;
+    credit_limit_normal = 3000;
     credit_limit=0;
     let connection;
     try {
