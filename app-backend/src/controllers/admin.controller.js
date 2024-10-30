@@ -480,7 +480,7 @@ adminController.getReport2 = async (req, res) => {
                     JOIN
                 credit_card_report r ON c.id = r.FK_Card
             WHERE
-                c.state = 'disabled'
+                c.state = 'blocked'
             ORDER BY r.generated_at DESC;
         `;
 
