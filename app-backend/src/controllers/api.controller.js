@@ -106,6 +106,12 @@ apiController.getCard = async (req, res) => {
             return res.status(400).json({message: "La tarjeta esta bloqueada", exist: false});
         }
 
+        const queryUser = `SELECT * FROM user WHERE id = ?`;
+        const resultUser = await connection.query(queryUser, [resultCard[0].FK_User]);
+
+        if(resultUser[0].pin != pin){
+            return res.status(400).json({message: "El pin es incorrecto", exist: false});
+        }
 
         const _card = resultCard[0];
 
