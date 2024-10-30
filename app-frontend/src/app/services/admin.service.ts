@@ -10,7 +10,7 @@ export class AdminService {
 
   readonly host = 'http://localhost:3001';
   readonly host2 = 'http://34.42.51.137:3001';
-  readonly apiAdmin = `${this.host}/admin`;
+  readonly apiAdmin = `${this.host2}/admin`;
   constructor(
     private _http: HttpClient
   ) { }
