@@ -1,52 +1,111 @@
 .container {
-    margin-top: 20px;
-  }
-  
-  .title {
-    color: #3273dc;
-    margin-bottom: 10px;
-  }
-  
-  .card-container {
-    margin-bottom: 20px;
-  }
-  
-  .card-blocked {
-    padding: 15px;
-    border: 1px solid #dbdbdb;
-    border-radius: 8px;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-  }
-  
-  .field {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-  }
-  
-  .field label {
+  margin-top: 20px;
+}
+
+.title {
+  color: #3273dc;
+  margin-bottom: 10px;
+}
+
+.card-container {
+  margin-bottom: 20px;
+}
+
+.card-blocked {
+  padding: 15px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.field label {
+  font-weight: bold;
+  color: #4a4a4a;
+}
+
+.field span {
+  color: #363636;
+}
+
+/* Estilo para los botones de exportación */
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
     font-weight: bold;
-    color: #4a4a4a;
-  }
-  
-  .field span {
-    color: #363636;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .card-blocked {
-      padding: 12px;
-      font-size: 14px;
+    color: #ffffff;
+    background-color: #3273dc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: #275ca8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
     }
-  
-    .field {
-      display: block;
-      padding: 6px 0;
+
+    &:active {
+      background-color: #1d3f7c;
+      transform: translateY(0);
     }
-  
-    .field label {
-      margin-bottom: 4px;
+
+    &.pdf-button {
+      background-color: #d9534f;
+
+      &:hover {
+        background-color: #c9302c;
+      }
+
+      &:active {
+        background-color: #ac2925;
+      }
+    }
+
+    &.csv-button {
+      background-color: #5cb85c;
+
+      &:hover {
+        background-color: #4cae4c;
+      }
+
+      &:active {
+        background-color: #449d44;
+      }
     }
   }
-  
+}
+
+/* Estilo responsive para pantallas pequeñas */
+@media screen and (max-width: 768px) {
+  .card-blocked {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .field {
+    display: block;
+    padding: 6px 0;
+  }
+
+  .field label {
+    margin-bottom: 4px;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+}

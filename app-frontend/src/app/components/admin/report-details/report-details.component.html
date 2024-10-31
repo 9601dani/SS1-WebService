@@ -45,4 +45,10 @@
       </div>
     </div>
   </div>
+
+  <!-- Botones de exportación -->
+  <div *ngIf="cardInfo" class="export-buttons">
+    <button class="pdf-button" (click)="exportToPDF()">Exportar a PDF</button>
+    <button class="csv-button" (click)="exportToCSV()">Exportar a CSV</button>
+  </div>
 </div>

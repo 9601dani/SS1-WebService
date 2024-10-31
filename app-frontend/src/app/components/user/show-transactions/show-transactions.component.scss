@@ -1,139 +1,195 @@
 .report-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-  
-    .date-range {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap; 
-      margin-bottom: 20px;
-  
-      label {
-        margin-right: 10px;
-      }
-  
-      input[type="date"] {
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-bottom: 10px;
-      }
-  
-      button {
-        padding: 10px 15px;
-        background-color: #3273dc;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        margin-bottom: 10px;
-        &:hover {
-          background-color: #275ca8;
-        }
-      }
-  
-      @media (max-width: 768px) {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  
-    .transactions-table {
-      width: 100%;
-      border-collapse: collapse;
-  
-      th, td {
-        padding: 10px;
-        text-align: left;
-        border-bottom: 1px solid #ccc;
-      }
-  
-      th {
-        background-color: #f5f5f5;
-        font-weight: bold;
-      }
-  
-      tbody tr:hover {
-        background-color: #f0f0f0;
-      }
-    }
-  
-    @media (max-width: 768px) {
-      .transactions-table {
-        display: block;
-        overflow-x: auto; 
-        width: 100%;
-        border: 0;
-  
-        thead {
-          display: table-header-group;
-        }
-  
-        tbody tr {
-          display: table-row;
-          margin-bottom: 10px;
-          border: 1px solid #ddd;
-          padding: 10px;
-          border-radius: 4px;
-        }
-  
-        tbody tr td {
-          display: table-cell;
-          text-align: left;
-          padding: 8px 10px;
-          font-size: 14px;
-          position: relative;
-          border: none;
-          border-bottom: 1px solid #eee;
-        }
-      }
-    }
-  
-    p {
-      text-align: center;
-      color: #999;
-    }
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
   }
-  
-  .account-info {
+
+  .date-range {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin-bottom: 20px;
-    text-transform: uppercase;
-  
-    .account-type, .currency-type {
-      flex-basis: 48%;
+
+    label {
+      margin-right: 10px;
     }
-  
-    strong {
+
+    input[type="date"] {
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #3273dc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 10px;
+
+      &:hover {
+        background-color: #275ca8;
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  .transactions-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #f5f5f5;
       font-weight: bold;
-      margin-right: 5px;
+    }
+
+    tbody tr:hover {
+      background-color: #f0f0f0;
     }
   }
-  
-  .balance-divider {
-    margin-top: 20px;
-    border: none;
-    border-top: 2px solid #ccc;
+
+  @media (max-width: 768px) {
+    .transactions-table {
+      display: block;
+      overflow-x: auto;
+      width: 100%;
+      border: 0;
+
+      thead {
+        display: table-header-group;
+      }
+
+      tbody tr {
+        display: table-row;
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 4px;
+      }
+
+      tbody tr td {
+        display: table-cell;
+        text-align: left;
+        padding: 8px 10px;
+        font-size: 14px;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+    }
   }
-  
-  .current-balance {
-    margin-top: 10px;
-    font-size: 1.2rem;
+
+  p {
+    text-align: center;
+    color: #999;
+  }
+}
+
+.account-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+
+  .account-type, .currency-type {
+    flex-basis: 48%;
+  }
+
+  strong {
     font-weight: bold;
-    color: #333;
-  
-    strong {
-      margin-right: 5px;
+    margin-right: 5px;
+  }
+}
+
+.balance-divider {
+  margin-top: 20px;
+  border: none;
+  border-top: 2px solid #ccc;
+}
+
+.current-balance {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+
+  strong {
+    margin-right: 5px;
+  }
+}
+
+/* Estilo para los botones de exportación */
+.export-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+
+  button {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #3273dc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      background-color: #275ca8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      background-color: #1d3f7c;
+      transform: translateY(0);
+    }
+
+    &.pdf-button {
+      background-color: #d9534f;
+
+      &:hover {
+        background-color: #c9302c;
+      }
+
+      &:active {
+        background-color: #ac2925;
+      }
+    }
+
+    &.csv-button {
+      background-color: #5cb85c;
+
+      &:hover {
+        background-color: #4cae4c;
+      }
+
+      &:active {
+        background-color: #449d44;
+      }
     }
   }
-  
+}
