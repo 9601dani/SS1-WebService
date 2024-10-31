@@ -3,6 +3,12 @@
 <div class="container">
   <h1 class="title">Tarjetas Bloqueadas</h1>
 
+  <div *ngIf="blockedCards.length > 0" class="export-buttons">
+    <button class="pdf-button" (click)="exportToPDF()">Exportar a PDF</button>
+    <button class="csv-button" (click)="exportToCSV()">Exportar a CSV</button>
+    <br><br>
+  </div>
+
   <div class="card-container" *ngFor="let card of blockedCards">
     <div class="card-blocked">
       <div class="field">

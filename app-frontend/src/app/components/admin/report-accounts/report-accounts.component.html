@@ -3,6 +3,11 @@
 <div class="container">
   <h1 class="title">Reporte de Cuentas por Estado</h1>
 
+  <div class="export-buttons">
+    <button (click)="exportToPDF()">Exportar a PDF</button>
+    <button (click)="exportToCSV()">Exportar a CSV</button>
+  </div>
+
   <div class="columns">
     <div class="column is-half">
       <div class="box">
