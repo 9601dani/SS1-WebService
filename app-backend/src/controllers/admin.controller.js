@@ -569,7 +569,7 @@ adminController.getReport4 = async (req, res) => {
         `;
 
         const result = await connection.query(queryReport);
-        const queryDisabled = `SELECT * FROM credit_card WHERE state = 'disabled';`;
+        const queryDisabled = `SELECT * FROM credit_card WHERE state = 'disabled' OR state = 'blocked';`;
         const resultDisabled = await connection.query(queryDisabled);
 
         const queryActive = `SELECT * FROM credit_card WHERE state = 'active';`;
@@ -593,6 +593,53 @@ adminController.getReport4 = async (req, res) => {
             disabled: resultDisabledParsed,
             active: resultActiveParsed
         });
+    } catch (error) {
+        if (connection) {
+            await connection.rollback();
+        }
+        console.log(error);
+        res.status(500).send({ message: "Error al obtener el reporte", error: error.message });
+    } finally {
+        if (connection) {
+            connection.release();
+        }
+    }
+}
+
+adminController.getReport5 = async (req, res) => {
+    let connection;
+    try {
+        connection = await getConnection();
+
+        connection.beginTransaction();
+
+        const queryReport = `
+            SELECT
+                cc.id AS credit_card_id,
+                u.id AS user_id,
+                u.username,
+                cc.credit_card_number,
+                cc.state,
+                cc.created_at AS credit_card_created_date,
+                cc.current_balance,
+                ccr.details AS close_reason
+            FROM
+                credit_card AS cc
+            JOIN
+                user AS u ON cc.FK_User = u.id
+            LEFT JOIN
+                credit_card_report AS ccr ON ccr.FK_Card = cc.id
+            WHERE
+                cc.state IN ('disabled', 'blocked')
+            ORDER BY
+                cc.created_at DESC;
+        `;
+
+        const result = await connection.query(queryReport);
+
+        connection.commit();
+
+        res.status(200).send({ message: "Reporte obtenido correctamente.", result: result });
     } catch (error) {
         if (connection) {
             await connection.rollback();

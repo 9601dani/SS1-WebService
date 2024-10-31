@@ -59,5 +59,8 @@ export class AdminService {
   getReportFour(): Observable<any> {
     return this._http.get<any>(`${this.apiAdmin}/report4`);
   }
+  getReportFive(): Observable<any> {
+    return this._http.get<any>(`${this.apiAdmin}/report5`);
+  }
 
 }

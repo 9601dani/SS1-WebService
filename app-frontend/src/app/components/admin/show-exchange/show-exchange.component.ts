@@ -22,6 +22,9 @@ export class ShowExchangeComponent implements OnInit {
   exchange: any;
   newExchangeRate!: number;
 
+  fee: any;
+  newFeeRate!: number;
+
   constructor(
     private _userService: UserService,
     private _adminService: AdminService
@@ -29,6 +32,7 @@ export class ShowExchangeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadExchange();
+    this.loadFee();
   }
 
   loadExchange(){
@@ -43,7 +47,7 @@ export class ShowExchangeComponent implements OnInit {
           title: 'Oops...',
           text: 'Error al cargar el contenido. Intenta más tarde.',
         });
-      })  
+      })
   }
 
   updateChange(){
@@ -76,6 +80,55 @@ export class ShowExchangeComponent implements OnInit {
           })
       } else if (result.isDenied) {
         Swal.fire('No se actualizó el tipo de cambio', '', 'info')
+      }
+    });
+  }
+
+  loadFee(){
+    this._userService.getContent('fee').subscribe(
+      (response: any) => {
+        if (Array.isArray(response) && response.length > 0) {
+         this.fee = response[0].key_value;
+        }
+      }, (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error al cargar el contenido. Intenta más tarde.',
+        });
+      })
+  }
+
+  updateFee() {
+    if (!this.newFeeRate || isNaN(this.newFeeRate) || this.newFeeRate <= 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Por favor, ingrese un número válido mayor a 0 para la comisión.',
+      });
+      return;
+    }
+    Swal.fire({
+      title: '¿Estás seguro de actualizar la comisión?',
+      showDenyButton: true,
+      confirmButtonText: `Sí`,
+      denyButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this._adminService.updateExchangeRate('fee', this.newFeeRate).subscribe(
+          () => {
+            Swal.fire('¡Actualizado!', '', 'success');
+            this.loadFee();
+            this.newFeeRate = 0;
+          }, (error) => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Error al actualizar la comisión. Intenta más tarde.',
+            });
+          });
+      } else if (result.isDenied) {
+        Swal.fire('No se actualizó la comisión', '', 'info');
       }
     });
   }

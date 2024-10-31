@@ -15,4 +15,19 @@
       <button (click)="updateChange()">Actualizar</button>
     </div>
   </div>
+
+  <div class="fee-box">
+    <h1>Comisión</h1>
+
+    <div class="current-fee box">
+      <h2>Comisión Actual</h2>
+      <p>{{ fee ? fee + '%' : 'Cargando...' }}</p>
+    </div>
+
+    <div class="update-fee box">
+      <h2>Actualizar Comisión</h2>
+      <input type="number" placeholder="Nueva comisión (%)" [(ngModel)]="newFeeRate">
+      <button (click)="updateFee()">Actualizar</button>
+    </div>
+  </div>
 </div>
