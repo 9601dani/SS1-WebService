@@ -12,7 +12,7 @@ export class UserService {
   readonly host = 'http://localhost:3001';
   readonly host2 = 'http://34.42.51.137:3001';
   readonly apiUser = `${this.host2}/user`;
-  
+
 
   constructor(
     private _http: HttpClient,

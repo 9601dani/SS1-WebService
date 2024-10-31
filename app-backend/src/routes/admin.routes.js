@@ -15,5 +15,6 @@ router.get('/report1', adminController.getReport1);
 router.get('/report2', adminController.getReport2);
 router.get('/report3/:card', adminController.getReport3);
 router.get('/report4', adminController.getReport4);
+router.get('/report5', adminController.getReport5);
 
 module.exports = router;
