@@ -20,6 +20,11 @@
     </div>
   </div>
 
+  <div class="export-buttons">
+    <button class="pdf-button" (click)="exportTransactionsToPDF()">Exportar a PDF</button>
+    <button class="csv-button" (click)="exportTransactionsToCSV()">Exportar a CSV</button>
+  </div>
+
   <div class="transaction-container" *ngFor="let transaction of filteredTransactions">
     <div class="transaction">
       <div class="field">
